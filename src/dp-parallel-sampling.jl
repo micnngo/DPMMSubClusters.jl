@@ -290,6 +290,7 @@ function dp_parallel(model_params::String; verbose = true, gt = nothing)
     global ground_truth = gt
     global burnout_period = burnout_period
     global max_num_of_clusters = max_clusters
+    global tol = tol 
     init_first_clusters!(dp_model, initial_clusters)
     if use_verbose
         println("Node Leaders:")
@@ -340,6 +341,7 @@ function run_model(dp_model, first_iter, model_params="none", prev_time = 0)
         push!(cluster_assignments, true_labels)
         push!(parrs, get_points_parr(all_pts))
 
+
         if ground_truth != nothing
             group_labels = Array(dp_model.group.labels)
             push!(v_score_history, varinfo(Int.(ground_truth),group_labels))
@@ -360,6 +362,14 @@ function run_model(dp_model, first_iter, model_params="none", prev_time = 0)
         else
             push!(liklihood_history,1)
         end
+
+        
+        if (calculate_posterior(dp_model) - liklihood_history[i-1]) > tol && i > 1
+            break
+        end 
+
+
+
         # if length(dp_model.group.local_clusters) > cur_parr_count
         #     cur_parr_count += max(20,length(dp_model.group.local_clusters))
         #     @sync for i in (nworkers()== 0 ? procs() : workers())
