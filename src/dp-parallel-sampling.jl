@@ -377,7 +377,7 @@ function run_model(dp_model, first_iter, model_params="none", prev_time = 0)
         end
 
         # break out early if tol reached 
-        if (calculate_posterior(dp_model) - liklihood_history[i-1]) > tol && i > 1
+        if (liklihood_history[end] - liklihood_history[end-1]) > tol && i > 2
             return dp_model, iter_count , nmi_score_history, liklihood_history, cluster_count_history, cluster_assignments, parrs
         end 
 
