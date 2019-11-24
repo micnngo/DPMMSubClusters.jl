@@ -363,13 +363,6 @@ function run_model(dp_model, first_iter, model_params="none", prev_time = 0)
             push!(liklihood_history,1)
         end
 
-        
-        if (calculate_posterior(dp_model) - liklihood_history[i-1]) > tol && i > 1
-            break
-        end 
-
-
-
         # if length(dp_model.group.local_clusters) > cur_parr_count
         #     cur_parr_count += max(20,length(dp_model.group.local_clusters))
         #     @sync for i in (nworkers()== 0 ? procs() : workers())
@@ -382,6 +375,12 @@ function run_model(dp_model, first_iter, model_params="none", prev_time = 0)
             @time save_model(dp_model,save_path, save_file_prefix, i, time() - start_time, model_params)
             # start_time += time() - save_time
         end
+
+        # break out early if tol reached 
+        if (calculate_posterior(dp_model) - liklihood_history[i-1]) > tol && i > 1
+            return dp_model, iter_count , nmi_score_history, liklihood_history, cluster_count_history, cluster_assignments, parrs
+        end 
+
     end
     return dp_model, iter_count , nmi_score_history, liklihood_history, cluster_count_history, cluster_assignments, parrs
 end
