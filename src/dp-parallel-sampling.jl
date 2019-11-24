@@ -318,6 +318,7 @@ function run_model(dp_model, first_iter, model_params="none", prev_time = 0)
         @spawnat i set_parr_worker(dp_model.group.labels,cur_parr_count)
     end
 
+    tol = 1000
 
     for i=first_iter:iterations
         # plot_group(dp_model.group)
