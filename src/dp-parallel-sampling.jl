@@ -318,8 +318,6 @@ function run_model(dp_model, first_iter, model_params="none", prev_time = 0)
         @spawnat i set_parr_worker(dp_model.group.labels,cur_parr_count)
     end
 
-    tol = 1000
-
     for i=first_iter:iterations
         # plot_group(dp_model.group)
         final = false
@@ -378,9 +376,9 @@ function run_model(dp_model, first_iter, model_params="none", prev_time = 0)
         end
 
         # break out early if tol reached 
-        if (liklihood_history[end] - liklihood_history[end-1]) > tol && i > 2
-            return dp_model, iter_count , nmi_score_history, liklihood_history, cluster_count_history, cluster_assignments, parrs
-        end 
+        #if (liklihood_history[end] - liklihood_history[end-1]) > tol && i > 2
+        #    return dp_model, iter_count , nmi_score_history, liklihood_history, #cluster_count_history, cluster_assignments, parrs
+        #end 
 
     end
     return dp_model, iter_count , nmi_score_history, liklihood_history, cluster_count_history, cluster_assignments, parrs
