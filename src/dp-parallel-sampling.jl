@@ -290,7 +290,7 @@ function dp_parallel(model_params::String; verbose = true, gt = nothing)
     global ground_truth = gt
     global burnout_period = burnout_period
     global max_num_of_clusters = max_clusters
-    global tol = tol 
+    #global tol = tol 
     init_first_clusters!(dp_model, initial_clusters)
     if use_verbose
         println("Node Leaders:")
