@@ -290,7 +290,7 @@ function dp_parallel(model_params::String; verbose = true, gt = nothing)
     global ground_truth = gt
     global burnout_period = burnout_period
     global max_num_of_clusters = max_clusters
-    #global tol = tol 
+    global tol = tol 
     init_first_clusters!(dp_model, initial_clusters)
     if use_verbose
         println("Node Leaders:")
@@ -307,6 +307,7 @@ function run_model(dp_model, first_iter, model_params="none", prev_time = 0)
     v_score_history = []
     nmi_score_history = []
     global ground_truth
+    global tol
     cur_parr_count = 10
     cluster_count_history = []
 
@@ -376,9 +377,9 @@ function run_model(dp_model, first_iter, model_params="none", prev_time = 0)
         end
 
         # break out early if tol reached 
-        #if (liklihood_history[end] - liklihood_history[end-1]) > tol && i > 2
-        #    return dp_model, iter_count , nmi_score_history, liklihood_history, #cluster_count_history, cluster_assignments, parrs
-        #end 
+        if i>2 && (liklihood_history[end] - liklihood_history[end-1]) > tol 
+            return dp_model, iter_count , nmi_score_history, liklihood_history, cluster_count_history, cluster_assignments, parrs
+        end 
 
     end
     return dp_model, iter_count , nmi_score_history, liklihood_history, cluster_count_history, cluster_assignments, parrs
